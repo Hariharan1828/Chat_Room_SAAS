@@ -19,11 +19,11 @@ const CheckoutButton = () => {
     const docRef = await addDoc(
       collection(db, "customers", session.user.id, "checkout_Session"),
       {
-        price:"price_1O0998KDjTc",
+        price:"price_1Or0q0SGzhL44JnK3ARrsf0t",
         success_url: window.location.origin,
         cancel_url: window.location.origin,
       }
-    )
+    );
     
     //...stripe extension on firebase will create a checkout session
 
