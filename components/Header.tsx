@@ -7,6 +7,7 @@ import { authOptions } from '@/auth'
 import  Link  from 'next/link';
 import { MessagesSquare } from 'lucide-react'
 import CreateChatButton from './CreateChatButton'
+import UpgradeBanner from './UpgradeBanner'
 
 const Header = async () => {
   const Session = await getServerSession(authOptions)
@@ -41,6 +42,8 @@ const Header = async () => {
             <UserButton Session={Session}/>
           </div>
         </nav>
+
+        <UpgradeBanner/>
     </header>
   )
 }
