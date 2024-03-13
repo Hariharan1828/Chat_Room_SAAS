@@ -62,11 +62,11 @@ const CreateChatButton = ({isLarge}:{isLarge:Boolean}) => {
                 duration:2000,
             });
         }).finally(() => {setLoading(false);
+
         
         });
         
         
-        router.push("/chat/new/abc")
     }
   if(isLarge)
   {
