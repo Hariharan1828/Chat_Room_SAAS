@@ -8,6 +8,8 @@ import { useSubscriptionStore } from '@/store/store';
 import { useToast } from './ui/use-toast';
 import { Spinner } from '@nextui-org/react';
 import {v4 as uuidv4} from "uuid";
+import { serverTimestamp, setDoc } from 'firebase/firestore';
+import { addChatRef } from '@/lib/converters/ChatMembers';
 
 const CreateChatButton = ({isLarge}:{isLarge:Boolean}) => {
     const {data:session} = useSession();
@@ -34,6 +36,36 @@ const CreateChatButton = ({isLarge}:{isLarge:Boolean}) => {
         // -----
 
         const ChatId = uuidv4();
+
+        await setDoc(addChatRef(ChatId,session.user.id),{
+            userId: session.user.id!,
+            email: session.user.email!,
+            timestamp: serverTimestamp(),
+            isAdmin: true,
+            chatId: ChatId,
+            image: session.user.image || "",
+
+        }).then(()=>{
+            toast({
+                title:"Success",
+                description:"You have created a new chat",
+                className:"bg-green-600 text-white",
+                duration:2000,
+            });
+            router.push(`/chat/${ChatId}`);
+        }).catch((error)=>{
+            console.error(error);
+            toast({
+                title:"Error",
+                description:"Something went wrong",
+                className:"bg-red-600 text-white",
+                duration:2000,
+            });
+        }).finally(() => {setLoading(false);
+        
+        });
+        
+        
         router.push("/chat/new/abc")
     }
   if(isLarge)

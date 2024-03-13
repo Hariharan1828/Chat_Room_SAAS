@@ -17,8 +17,8 @@ export interface ChatMembers{
         return{
             userId: member.userId, 
             email: member.email,  
-            timestamp: member.timestamp || new Date(),
-            isAdmin: member.isAdmin,
+            timestamp: member.timestamp,
+            isAdmin: !!member.isAdmin,
             chatId: member.chatId,
             image: member.image || "",
         };
@@ -60,5 +60,5 @@ export const chatMemberCollectionGroupRef = (userId:string)=>
         where('userId', '==', userId)
     ).withConverter(ChatMembersConverters)
 
-    
+
 
