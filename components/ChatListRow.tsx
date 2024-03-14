@@ -1,16 +1,73 @@
 "use client";
 import { Skeleton } from "@/components/ui/skeleton"
 import { Message, limitedSoretedMessagesRef } from "@/lib/converters/Message";
+import { useRouter } from "next/navigation";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import UserAvatar from "./UserAvatar";
+import { Session } from "inspector";
+import { useSession } from "next-auth/react";
 
 
 const ChatListRow = ({chatId}:{chatId: string}) => {
-    const [values, loading, error, snapshot] =
+    const [messages, loading, error, snapshot] =
   useCollectionDataOnce < Message > (
     limitedSoretedMessagesRef(chatId)
   );
+  const router = useRouter();
+  const {data:session} = useSession();
+
+  function prettyUUId(n=4){
+    return chatId.substring(0,n);
+  }
+
+  const row = (message?: Message)=>(
+    <div className="flex p-5 items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700" key={chatId}
+    onClick={()=> router.push(`/chat/${chatId}`)}
+    
+    >
+        <UserAvatar name={message?.user.name|| session?.user.name} image={message?.user.image|| session?.user.image}/>
+
+        <div className="flex-1">
+            <p className="font-bold">
+                {!message && "New Chat"}
+                {
+                    message && [message?.user.name || session?.user.name].toString().split(" ")[0]
+                }
+
+            </p>
+            <p className="text-gray-400 line-clamp-1">
+                {message?.translate?.en|| "Get started with the conversation"}
+            </p>
+
+        </div>
+
+        <div className="text-xs text-gray-400 text-right">
+            <p className="pb-auto">
+                {
+                    message ?new Date(message.timestamp).toLocaleString(): "No messages yet"
+                }
+            </p>
+            <p> chat #{prettyUUId()}</p>
+        </div>
+
+    </div>
+  )
+
   return (
-    <div>ChatListRow</div>
+    <div className="">
+        {loading && (
+            <div className="flex p-5 items-center space-x-2">
+                <Skeleton className="h-12 w-12 rounded-full"/>
+                <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-full"/>
+                    <Skeleton className="h-4 w-1/4"/>
+                </div>
+            </div>
+        )}
+        {messages?.length ===0 && !loading && row()}
+        {messages?.map((message)=>row(message))}
+
+    </div>
   )
 }
 
