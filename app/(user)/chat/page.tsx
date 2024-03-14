@@ -4,6 +4,7 @@ import React from 'react'
 const ChatsPage = () => {
   return (
     <div>
+        <h1>chats page</h1>
         {/* chat permission error */}
         {/* Chat List */}
         <ChatList/>
