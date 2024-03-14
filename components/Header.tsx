@@ -37,7 +37,7 @@ const Header = async () => {
             
             }
 
-            <CreateChatButton isLarge/>
+            <CreateChatButton isLarge={false}/>
             <DarkModeToggle/>
             <UserButton Session={Session}/>
           </div>
