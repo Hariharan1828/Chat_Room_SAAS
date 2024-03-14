@@ -32,7 +32,7 @@ export interface ChatMembers{
         return {
             userId:snapshot.id,
             email:data.email,
-            timestamp: data.timestamp.toDate(),
+            timestamp: data.timestamp,
             isAdmin: data.isAdmin,
             chatId: data.chatId,
             image: data.image,
